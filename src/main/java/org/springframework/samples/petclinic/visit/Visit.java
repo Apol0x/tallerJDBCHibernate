@@ -19,12 +19,15 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.samples.petclinic.bill.Bill;
 import org.springframework.samples.petclinic.model.BaseEntity;
 
 /**
@@ -57,7 +60,7 @@ public class Visit extends BaseEntity {
      */
     @Column(name = "pet_id")
     private Integer petId;
-
+    
 
     /**
      * Creates a new instance of Visit for the current date
@@ -119,6 +122,17 @@ public class Visit extends BaseEntity {
      */
     public void setPetId(Integer petId) {
         this.petId = petId;
+    }
+    
+    @OneToOne(fetch=FetchType.LAZY)
+    private Bill bill;
+    
+    public Bill getBill() {
+    	return bill;
+    }
+    
+    public void setBill(Bill bill) {
+    	this.bill=bill;
     }
 
 }
