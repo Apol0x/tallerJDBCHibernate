@@ -61,6 +61,21 @@ public class Visit extends BaseEntity {
     @Column(name = "pet_id")
     private Integer petId;
     
+    
+    // --- Incluimos la relación con la tabla factura -- //
+    @OneToOne(fetch = FetchType.LAZY)
+    private Bill bill;
+
+
+    public Bill getBill() {
+	return bill;
+    }
+
+    public void setBill(Bill bill) {
+ 	this.bill = bill;
+    }    
+    // --- FIn de la inclusión con la tabla factura
+
 
     /**
      * Creates a new instance of Visit for the current date
@@ -124,15 +139,10 @@ public class Visit extends BaseEntity {
         this.petId = petId;
     }
     
-    @OneToOne(fetch=FetchType.LAZY)
-    private Bill bill;
     
-    public Bill getBill() {
-    	return bill;
-    }
-    
-    public void setBill(Bill bill) {
-    	this.bill=bill;
-    }
+	@Override
+	public String toString() {
+		return "Visit [date=" + date + ", description=" + description + ", petId=" + petId + "]";
+	}	
 
 }

@@ -61,27 +61,24 @@ public class Owner extends Person {
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
     private Set<Pet> pets;
+    
+    
+    // ------ Incluimos la relación con la tabla de facturas ------ //
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "owner")
+    private Set<Bill> bills;
+    
+    public Set<Bill> getBills() {
+	return bills;
+    }
 
-//    @OneToMany(cascade=CascadeType.ALL, mappedBy = "owner")
-//    private Set<Bill>bills;
-//
-//    
-//    public Set<Bill> getBills(){
-//    	return bills();
-//    }
-//    
-//
-//	private Set<Bill> bills() {
-//		// TODO Auto-generated method stub
-//		return null;
-//	}
-//
-//
-//	public void setBills(Set<Bill> bills) {
-//    	this.bills = bills;
-//    }
-    
-    
+    public void setBills(Set<Bill> bills) {
+	this.bills = bills;
+    }
+    // ------- Fin de la inclusión ---------- //
+
+
+
+
     public String getAddress() {
         return this.address;
     }
