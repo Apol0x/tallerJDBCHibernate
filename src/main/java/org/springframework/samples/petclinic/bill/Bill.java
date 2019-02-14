@@ -28,6 +28,7 @@ import org.springframework.samples.petclinic.visit.Visit;
 @NamedQueries({
 @NamedQuery(name="billByIdNumber", query="select b from Bill b where b.idNumber=:idNumber")
 })
+//SELECT petclinic.visits.id FROM petclinic.VISITS JOIN petclinic.PETS WHERE petclinic.PETS.ID=8;
 public class Bill extends BaseEntity {
 
 	

@@ -25,6 +25,8 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -48,6 +50,9 @@ import org.springframework.samples.petclinic.model.Person;
  */
 @Entity
 @Table(name = "owners")
+@NamedQueries({
+@NamedQuery(name="ownerByCity", query="select o from Owner o where o.city=:city")
+})
 public class Owner extends Person {
     @Column(name = "address")
     @NotEmpty

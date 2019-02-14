@@ -26,8 +26,11 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.samples.petclinic.bill.Bill;
+import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.samples.petclinic.visit.Visit;
 import org.springframework.samples.petclinic.persistence.dao.BillDAO;
 import org.springframework.samples.petclinic.persistence.dao.IBillAO;
+import org.springframework.samples.petclinic.persistence.dao.IOwnerAO;
 
 /**
  * PetClinic Spring Boot Application.
@@ -42,6 +45,10 @@ public class DAOApplication implements CommandLineRunner {
 	@Autowired
 	IBillAO billDAO;
 	
+	@Autowired
+	IOwnerAO ownerDAO;
+	
+	
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(DAOApplication.class, args);
@@ -54,6 +61,13 @@ public class DAOApplication implements CommandLineRunner {
     @Transactional
     public void run(String... arg0) {
     	
+    	Owner o = new Owner();
+    	o.setAddress("Sevilla");
+    	o.setCity("Sevilla");
+    	o.setFirstName("Antonio");
+    	o.setLastName("Polo");
+    	o.setTelephone("123456");
+    	ownerDAO.create(o);
 
 		Bill b = new Bill();
 		b.setIdNumber(954);

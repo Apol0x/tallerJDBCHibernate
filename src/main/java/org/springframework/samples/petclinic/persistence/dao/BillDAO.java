@@ -25,7 +25,7 @@ public class BillDAO extends AbstractJpaDAO<Bill,Integer> implements IBillAO{
 
 	@Override
 	public List<Bill> getBIllsByIdNumberNamedQuery(long idNumber) {
-		// TODO Auto-generated method stub
+		
 		return getEntityManager().createNamedQuery("billByIdNumber").setParameter("idNumber", idNumber).getResultList();
 	}
 

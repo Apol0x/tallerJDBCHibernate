@@ -52,10 +52,10 @@ public class HibernateApplication implements CommandLineRunner {
 	VisitRepository visitRepository;
 	
 
-    public static void main(String[] args) throws Exception {
-        SpringApplication.run(HibernateApplication.class, args);
-        
-    }
+//    public static void main(String[] args) throws Exception {
+//        SpringApplication.run(HibernateApplication.class, args);
+//        
+//    }
     
     
     
