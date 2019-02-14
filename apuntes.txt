@@ -1,0 +1,183 @@
+MAVEN
+============
+Comandos para generar un proyecto base nuevo:
+
+mvn archetype:generate -DgroupId=com.everis.bootcamp -DartifactId=taller-maven -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false 
+
+Compilar proyecto:
+
+mvn package
+
+Limpiar proyecto
+
+mvn clean
+
+Limpiar y empaquetar completo, sin compilar ni ejecutar las pruebas unitarias.
+
+mvn clean package -Dmaven.test.skip=true
+
+Ejecutamos el .jar generado
+
+--Desde eclipse en /src/main/java ejecutar Run as Java Aplication el App.java
+	nos mostrará por pantalla un Hello World!
+
+--Sobre el proyecto taller-maven, segundo botón>Run As>Maven build
+	
+
+Podemos añadir dependencias yendo a Maven.org y buscando la dependencia, y copiando el código en nuestro pom.xml
+
+si a la hora de importar la clase nos diese fallo de que no lo encontrase seguimos esta ruta para actulizar el proyecto
+Proyecto>Maven>Update Project>checkeamos el force
+Y refrescamos para ver si al importa la clase lo hace correctamente.
+
+forkeamos el proyecto, luego clonamos el repo que se ha creado en nuestro perfil.
+e importamos esa carpeta a eclipse
+
+usaremos MYSQL
+
+
+JDB
+==================
+3 TIPOS DE STATEMENTS
+Statements (query no paremetizadas)
+CallableStatement (query parametizadas)
+PreparedStatement (query inyectables)
+
+Tratamiento de resultados
+primero abririamos la query y con un bucle recorreriamos los datos de dicha tabla de la query
+
+
+
+-------------------------------------------
+HIBERNATE
+===========================================
+
+------------------------
+-->>Anotaciones básicas:
+------------------------
+-Entidades @Entity
+-Tablas @Table
+	nos permite definir detalles de la tabla que se usará para persistir la @Entity que es representada por la clase
+	. Nombre de la tabla
+	. Catálogo al que pertenece
+	. Esquema en el que definirla
+	. Restricciones de unicidad
+	e.g(@Table(name = "alumno", schema="mi_prefijo"))
+
+-Claves @Id
+	Cada tabla va a tener una clave asociada y Hibernate se va encargar de la gestión 
+de dichas claves mediante la anotacion @Id
+Se permite @Id de campos múltiples
+@GeneratedValue
+Define la estrategia de generación de identificadores mediante dos parámetros:
+	. strategy(GenerationType.AUTO)
+	. generator:
+
+- Columnas @Column
+Define propiedades de la columna donde se mapeará un campo de un objeto dentro de la base de datos, las propiedades más
+comunes son:
+	. name: define nombre columna bd
+	. length define la long del campo
+	. nullable define q columna puede contener valores nulos
+	. unique permite poner restriccion de unicidad
+
+- Vacio o NoNulo @NotEmpty
+comprueba q la string,collection,mapa o array no sean nulls o estén vacios
+
+- Fechas @Temporal
+Anota campos del tipo JAVA:
+	. Date
+	. Time
+	. Timestamp
+	. Calendar
+Sirve para "afinar" la forma que se van a presentar en la base de datos, recibe:
+	. TemporalType.DATE
+	. TemporalType.TIME
+	. TemporalType.TIMESTAMP
+
+- Fechas @DateTimeFormat
+Se usa junto con @Temporal, pero no pertenece a Hibernate. Es parte de Spring Framework
+No tiene nada que ver con ninguna validacion, simplemenete especifica el formato.
+
+- Digitos @Digits
+Lo usuamos para especificar y validar la cantidad de digitos de un numero. Posee tres 
+atributos principales:
+	Integer: define el n de digitos en la parte entera que se pueden tener
+	Fraction: define el n de digitos en la parte decimal
+
+- Rangos @Min/@Max
+definen valores maximos o minimos para un atributo
+e.g(@Min value= 18, message = "Hay que ser mayor de edad")
+
+- Longitud @Length
+define la longitud del atributo
+
+
+--Relaciones I @MappedSuperClass
+Nos permite definir una clase abstracta de la que heredan otrsa entidades como "parte"
+del mapeado en cada tabla de las entidades. Es decir, serán los atributos comunes que
+tendrán varias clases sin necesidad de repetirlos.
+
+Si por ejemplo siempre tenemos que configurar los Id para cada clase java
+podemos con hibernate crear una BaseEntity(Entidad Base) para especificar
+Id por defectos
+
+--Realciones II @OneToMany @ManyToOne
+	public class A{
+		@OneToMany(cascade = CascadeType.ALL, mappedBy = "a")
+// con cascade configuramos lo que podría pasar si cambia algo en esa clase
+// con respecto a la otra.
+		private List<B> collectionB;
+	}
+	public class B{
+		@ManyToOne
+		@JoinColumn(name="a")
+		private A a;
+	}
+
+--Relaciones III @ManyToMany
+	public class A{
+		@ManyToMany(fetch= FetchType.LAZY)
+		@JoinTable(name="A_B", JoinColumns=@JoinColumn(name="key_de_a"),inverseJoinColumn=@JoinColumn(name="key_de_b")
+		private Set<B> collectionB;
+	}
+	public class B{
+		@ManyToMany(fetch= FetchType.EAGER, mappedBy="collectionB") //esta linea es la forma de indicarle
+		private Set<A> collectionA;				    //que aquí ya tiene la informacion de B
+	}
+//con Fetch podemos especificar que es lo que no queremos tener en cuenta
+
+--Relaciones IV @OneToOne
+	public class A{
+		@OneToOne(fetch= FetchType.LAZY, mappedBy="b")
+		private B b;
+	}
+	public class B{
+		@OneToOne
+		@JoinColumn(name="a")
+		private A a;
+	}
+
+--Relaciones V EAGER vs. LAZY
+en Hibernate las relaciones entre "miembros" por defecto es Lazy
+
+
+1.Crear una nueva entidad Bill que se mapeara a la tabla facturas.Cada owner
+puede tener 0..N facaturas, y cada visita estará relacionada con 0..1 factura. 
+Los campos de factura serán un numero de identificación (representando como un long de 
+10 digitos), una fecha pago y una cuantía.
+
+owners n <----> m visitas
+
+2. Eliminar la relacion entre facturas y owners
+
+3. Abrir el fichero hibernateApplication.java y añadir al final de la funcion run, bajo los comentarios codigo para:
+	.imprimir todas las visitas de la mascota que tiene id=8
+	.imprimir sus facturas asociadas si las tuviese, si no, imprimir "no existe"
+	.crear una factura, y asignarsela a la visita 2(que estará asociada a la mascota 8)
+	.persistir los datos en la BD
+	.comprobar que están persistidos.
+
+
+
+

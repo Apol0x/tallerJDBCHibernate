@@ -42,9 +42,9 @@ public class Bill extends BaseEntity {
 	@DecimalMin("0.0")
 	private double money;
 	
-	@ManyToOne
-    	@JoinColumn(name = "owner")
-	private Owner owner;
+//	@ManyToOne
+//    @JoinColumn(name = "owner")
+//	private Owner owner;
 	
 	@OneToOne(fetch = FetchType.LAZY, mappedBy = "bill", cascade = CascadeType.ALL)
 	private Visit visit;
@@ -75,13 +75,13 @@ public class Bill extends BaseEntity {
 		this.money = money;
 	}
 
-	public Owner getOwner() {
-		return owner;
-	}
-
-	public void setOwner(Owner owner) {
-		this.owner = owner;
-	}
+//	public Owner getOwner() {
+//		return owner;
+//	}
+//
+//	public void setOwner(Owner owner) {
+//		this.owner = owner;
+//	}
 
 	public Visit getVisit() {
 		return visit;
