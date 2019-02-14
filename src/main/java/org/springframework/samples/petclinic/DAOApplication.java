@@ -69,6 +69,11 @@ public class DAOApplication implements CommandLineRunner {
     	o.setTelephone("123456");
     	ownerDAO.create(o);
 
+    	List<Owner> ownerNameQuery  = ownerDAO.getOwnerByCityNamedQuery("Sevilla") 
+		for(Owner ownerNamed:ownerNameQuery) {
+			System.out.println("Consulta namedQuery con city Sevilla . Propietario recuperado con ID  " + ownerNamed.getId() + ", nombre " + ownerNamed.getFirstName()+ ", apellido " + ownerNamed.getLastName() );
+		}
+    	
 		Bill b = new Bill();
 		b.setIdNumber(954);
 		b.setMoney(4.0);
